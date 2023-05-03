@@ -3,8 +3,8 @@
 {% block content %}
     <div class="form-wrapper">
         <h2>Contact</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
-           
+        <form action="{% url 'contact:create' %}" method="POST" enctype="multipart/form-data">
+           {% csrf_token %}
             <div class="form-contet">
                 <div class="form-group">
                     <label for="id_first_name">LABEL</label>
@@ -21,4 +21,3 @@
         </form>
     </div>
 {% endblock content %}
-
