@@ -5,9 +5,22 @@ from contact.models import Contact
 
 
 class ContactForm(forms.ModelForm):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'classe-a classe-b',
+                'placeholder': 'Digite seu nome',
+            },
+        ),
+        label='Primeiro Nome',
+        help_text='Texto de ajuda para seu usuário',
+    )
+
     class Meta:
         model = Contact
-        fields = 'first_name', 'last_name', 'phone',
+        fields = (
+            'first_name', 'last_name', 'phone',
+        )
 
     def clean(self):
         cleaned_data = self.cleaned_data
