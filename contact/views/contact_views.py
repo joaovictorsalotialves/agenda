@@ -3,7 +3,9 @@ from contact.models import Contact
 
 
 def index(request):
-    contats = Contact.objects.all()
+    contats = Contact.objects\
+        .filter(show=True)\
+        .order_by('-id')[:10]
 
     context = {
         'contacts': contats,
