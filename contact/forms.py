@@ -24,6 +24,14 @@ class ContactForm(forms.ModelForm):
         help_text='(DD) 99999-9999',
         label='Phone*',
     )
+    picture = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'accept': 'image/*',
+                'required': False
+            }
+        )
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,6 +52,7 @@ class ContactForm(forms.ModelForm):
         fields = (
             'first_name', 'last_name', 'phone',
             'email', 'description', 'category',
+            'picture',
         )
 
     def clean(self):

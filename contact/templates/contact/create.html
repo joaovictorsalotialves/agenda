@@ -17,6 +17,16 @@
                             <p class="help-text">{{ field.help_text }}</p>
                         {% endif %}
                     </div>
+
+                    {% if field.name == 'picture' and field.value.url %}
+                        <div class="form-gruop">   
+                            <img 
+                                src="{{ field.value.url }}" 
+                                alt="{{ contact.first_name }} {{ contact.last_name }}"
+                            >
+                        </div>
+                    {% endif %}
+
                 {% endfor %}
                 
             </div>
