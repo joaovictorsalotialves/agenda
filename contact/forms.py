@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -8,18 +10,40 @@ class ContactForm(forms.ModelForm):
     first_name = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'class': 'classe-a classe-b',
-                'placeholder': 'Digite seu nome',
+                'placeholder': 'First Name',
             },
         ),
-        label='Primeiro Nome',
-        help_text='Texto de ajuda para seu usuário',
+        label='First Name*',
     )
+    phone = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Phone',
+            },
+        ),
+        help_text='(DD) 99999-9999',
+        label='Phone*',
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['last_name'].widget.attrs.update({
+            'placeholder': 'Last Name',
+        })
+        self.fields['email'].widget.attrs.update({
+            'placeholder': 'E-mail',
+        })
+        self.fields['description'].widget.attrs.update({
+            'placeholder': 'Description',
+            'style': 'resize: none'
+        })
 
     class Meta:
         model = Contact
         fields = (
             'first_name', 'last_name', 'phone',
+            'email', 'description', 'category',
         )
 
     def clean(self):
@@ -37,14 +61,15 @@ class ContactForm(forms.ModelForm):
 
         return super().clean()
 
-    def clean_first_name(self):
-        first_name = self.cleaned_data.get('first_name')
+    def clean_phone(self):
+        standard = r'(\(\d{2}\)\s|\d{2}\s)?\d{4,5}-\d{4}'
+        phone = self.cleaned_data.get('phone')
 
-        if first_name == 'ABC':
+        if not re.match(standard, phone):
             msg_error = ValidationError(
-                'Primeiro nome, não pode ser ABC',
+                'Formato de número, inválido',
                 code='invalid'
             )
-            self.add_error('first_name', msg_error)
+            self.add_error('phone', msg_error)
 
-        return first_name
+        return phone
