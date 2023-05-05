@@ -6,8 +6,6 @@ from contact.forms import RegisterForm
 def register(request):
     form = RegisterForm()
 
-    messages.info(request, 'Uma msg')
-
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
